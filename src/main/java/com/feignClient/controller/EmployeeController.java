@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class EmployeeController {
 
@@ -20,6 +22,11 @@ public class EmployeeController {
     private ResponseEntity<EmployeeResponse> getEmployeeDetails(@PathVariable("empId") int empId) {
         EmployeeResponse employee = employeeService.getEmployeeById(empId);
         return ResponseEntity.status(HttpStatus.OK).body(employee);
+    }
+
+    @GetMapping("/employees")
+    public List<EmployeeResponse> getEmployees(){
+        return employeeService.getEmployeesDetails();
     }
 
 
