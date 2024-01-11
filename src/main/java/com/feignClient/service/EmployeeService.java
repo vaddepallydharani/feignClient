@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +39,21 @@ public class EmployeeService {
         employeeResponse.setAddressResponse(addressResponse.getBody());
 
         return employeeResponse;
+    }
+    public List<EmployeeResponse> getEmployeesDetails(){
+       List<Employee> employeeList= employeeRepository.findAll();
+       List<EmployeeResponse> employeesList=new ArrayList<>();
+       for(Employee employee:employeeList){
+         EmployeeResponse employeeResponse=new EmployeeResponse();
+          employeeResponse.setEmpId(employee.getEmpId());
+          employeeResponse.setEmpName(employee.getEmpName());
+          employeeResponse.setEmpSalary(employee.getEmpSalary());
+           ResponseEntity<AddressResponse> addressResponse = addressClient.getAddressByEmployeeId(employee.getEmpId());
+           employeeResponse.setAddressResponse(addressResponse.getBody());
+           employeesList.add(employeeResponse);
+       }
+
+        return employeesList;
     }
 
 
